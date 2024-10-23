@@ -1,10 +1,17 @@
 import './App.css'
+import Navbar from './components/Navbar'
+interface AppProps {
+  children: React.ReactNode
+}
 
-function App() {
+function App({children}: AppProps) {
 
   return (
     <>
-      <h1>Photo album</h1>
+      <Navbar/>
+      <main>
+        {children}
+      </main>
     </>
   )
 }
