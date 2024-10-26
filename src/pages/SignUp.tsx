@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Oauth from "../components/Oauth";
+import { Link } from "react-router-dom";
 
-const Login = () => {
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -21,14 +22,15 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full ">
+      <div className="max-w-md w-full">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Create an account
           </h2>
+          
         </div>
         <div className="mt-8 space-y-6">
-          <form className="mt-6 space-y-6">
+          <form className="mt-6 space-y-6" >
             <div>
               <input
                 id="email"
@@ -42,7 +44,6 @@ const Login = () => {
                 placeholder="Email address"
               />
             </div>
-
             <div className="relative">
               <input
                 id="password"
@@ -69,13 +70,13 @@ const Login = () => {
 
             <div className="flex items-center justify-between text-sm">
               <p>
-                Don't have an account?
+                Have an account?
                 <Link
-                  to="/sign-up"
+                  to="/login"
                   className="font-medium text-red-500 hover:text-red-700 transition duration-200 ease-in-out"
                 >
                   {" "}
-                  Register
+                  Log in
                 </Link>
               </p>
 
@@ -86,12 +87,13 @@ const Login = () => {
                 Forgot your password?
               </Link>
             </div>
+
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md uppercase text-white bg-blue-600 hover:bg-blue-700 "
+                className="group relative w-full uppercase flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 "
               >
-                Sign in
+                Sign up
               </button>
             </div>
 
@@ -100,12 +102,15 @@ const Login = () => {
           </div>
 
           <Oauth></Oauth>
+          </form>
 
-          </form>     
+          
+
+          
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default SignUp;
