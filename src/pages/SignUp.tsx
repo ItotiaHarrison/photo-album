@@ -1,16 +1,22 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Oauth from "../components/Oauth";
 import { Link } from "react-router-dom";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {db} from "../firebase";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
-  const { email, password } = formData;
+  const {name, email, password } = formData;
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -19,6 +25,32 @@ const SignUp = () => {
       [name]: value,
     }));
   };
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>){
+    e.preventDefault();
+
+    try {
+      const auth = getAuth()
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user
+
+      await updateProfile(user, {
+        displayName: name
+      })
+      
+     const formDataCopy: any = {...formData};
+     delete formDataCopy.password
+     formDataCopy.timestamp = serverTimestamp();
+
+     await setDoc(doc(db, "users", user.uid), formDataCopy)
+
+     navigate("/home")
+    } catch (error) {
+        console.log(error)
+      toast.error("Something went wrong with the registration ")
+      
+    }
+  }
 
   return (
     <div className="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -30,7 +62,20 @@ const SignUp = () => {
           
         </div>
         <div className="mt-8 space-y-6">
-          <form className="mt-6 space-y-6" >
+          <form className="mt-6 space-y-6" onSubmit={onSubmit}>
+          <div>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                value={name}
+                onChange={handleChange}
+                required
+                className="transition ease-in-out rounded w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 sm:text-sm"
+                placeholder="Enter name"
+              />
+            </div>
+
             <div>
               <input
                 id="email"
@@ -102,11 +147,7 @@ const SignUp = () => {
           </div>
 
           <Oauth></Oauth>
-          </form>
-
-          
-
-          
+          </form>    
         </div>
       </div>
     </div>

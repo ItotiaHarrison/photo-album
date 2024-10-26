@@ -10,7 +10,7 @@ const LandingPage = () => {
           Create beautiful collections, add descriptions, and relive your favorite moments anytime, anywhere.
         </p>
         <a 
-          href="/sign-up" 
+          href="/login" 
           role="button"
           className="inline-block bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg 
                      transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none 

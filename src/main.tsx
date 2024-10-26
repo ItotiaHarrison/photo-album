@@ -28,5 +28,6 @@ createRoot(document.getElementById("root")!).render(
         </Routes>
       </App>
     </Router>
+    
   </StrictMode>
 );

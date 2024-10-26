@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
 import Oauth from "../components/Oauth";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,6 +12,7 @@ const Login = () => {
     password: "",
   });
   const { email, password } = formData;
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -18,6 +21,19 @@ const Login = () => {
       [name]: value,
     }));
   };
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>){
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      if(userCredential.user){
+        navigate("/home")
+      }
+    } catch (error) {
+      toast.error("Bad user credentials")
+    }
+  }
 
   return (
     <div className="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -28,7 +44,7 @@ const Login = () => {
           </h2>
         </div>
         <div className="mt-8 space-y-6">
-          <form className="mt-6 space-y-6">
+          <form className="mt-6 space-y-6" onSubmit={onSubmit}>
             <div>
               <input
                 id="email"
