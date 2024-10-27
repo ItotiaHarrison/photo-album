@@ -47,8 +47,7 @@ const SignUp = () => {
      navigate("/home")
     } catch (error) {
         console.log(error)
-      toast.error("Something went wrong with the registration ")
-      
+      toast.error("Something went wrong with the registration ")   
     }
   }
 

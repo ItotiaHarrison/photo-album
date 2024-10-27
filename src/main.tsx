@@ -11,6 +11,8 @@ import Login from "./pages/Login.tsx";
 import LandingPage from "./pages/LandingPage.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
+import Profile from "./pages/Profile.tsx";
+import PrivateRoute from "./components/PrivateRoute.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -20,6 +22,9 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<LandingPage />} />
+          <Route path="/profile" element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/home" element={<Home />} />
           <Route path="/albums/:id" element={<Albums />} />
@@ -28,6 +33,5 @@ createRoot(document.getElementById("root")!).render(
         </Routes>
       </App>
     </Router>
-    
   </StrictMode>
 );
