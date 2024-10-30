@@ -22,10 +22,16 @@ const Photos = () => {
       try {
         if (!id) return;
         const photoResponse = await getAlbumPhotos(parseInt(id));
-        setPhotos(photoResponse.data);
-        setLoading(false);
+        if (photoResponse && photoResponse.data){
+          setPhotos(photoResponse.data);
+        } else {
+          throw new Error("Invalid response format");
+        }
+        
       } catch (error) {
         console.error("Error fetching album photos:", error);
+        setLoading(false);
+      } finally {
         setLoading(false);
       }
     };

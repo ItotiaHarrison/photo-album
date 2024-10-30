@@ -31,6 +31,7 @@ const Login = () => {
         navigate("/home")
       }
     } catch (error) {
+      console.log(error);
       toast.error("Bad user credentials")
     }
   }
