@@ -19,6 +19,8 @@ const ForgotPassword = () => {
       await sendPasswordResetEmail(auth, email)
       toast.success("Email was sent")
     } catch (error) {
+      console.log('Error resetting password :', error);
+      
       toast.error("Could not reset password")
     }
   }

@@ -8,9 +8,20 @@ import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface FirestoreData extends Omit<FormData, 'password'> {
+  timestamp: ReturnType<typeof serverTimestamp>;
+}
+
+
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
@@ -38,9 +49,11 @@ const SignUp = () => {
         displayName: name
       })
       
-     const formDataCopy: any = {...formData};
-     delete formDataCopy.password
-     formDataCopy.timestamp = serverTimestamp();
+      const formDataCopy: FirestoreData = {
+        name,
+        email,
+        timestamp: serverTimestamp(),
+      };
 
      await setDoc(doc(db, "users", user.uid), formDataCopy)
 

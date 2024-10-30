@@ -2,6 +2,15 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import Photos from '../Photos';
 import { getAlbumPhotos } from '../../services/api';
+import { AxiosResponse, AxiosRequestConfig } from 'axios';
+
+interface Photo {
+  id: number;
+  title: string;
+  url: string;
+  thumbnailUrl: string;
+}
+
 
 jest.mock('../../services/api');
 const mockedGetAlbumPhotos = getAlbumPhotos as jest.MockedFunction<typeof getAlbumPhotos>;
@@ -24,7 +33,7 @@ describe('Photos Component', () => {
   });
 
   test('displays loading state initially', async () => {
-    // Mock API call but delay the response
+    
     mockedGetAlbumPhotos.mockImplementation(
       () => new Promise(resolve => setTimeout(resolve, 100))
     );
@@ -51,8 +60,8 @@ describe('Photos Component', () => {
       status: 200,
       statusText: 'OK',
       headers: {},
-      config: {} as any
-    });
+      config: {} as AxiosRequestConfig
+    } as AxiosResponse<Photo[]>);
 
     await act(async () => {
       await renderPhotos();
@@ -89,8 +98,8 @@ describe('Photos Component', () => {
       status: 200,
       statusText: 'OK',
       headers: {},
-      config: {} as any
-    });
+      config: {} as AxiosRequestConfig
+    } as AxiosResponse<Photo[]>);
 
     await act(async () => {
       await renderPhotos('5');
@@ -114,8 +123,8 @@ describe('Photos Component', () => {
       status: 200,
       statusText: 'OK',
       headers: {},
-      config: {} as any
-    });
+      config: {} as AxiosRequestConfig
+    } as AxiosResponse<Photo[]>);
 
     await act(async () => {
       await renderPhotos();

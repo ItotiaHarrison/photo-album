@@ -2,12 +2,17 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import Albums from '../Albums';
 import { getUserAlbums } from '../../services/api';
-import { AxiosResponse } from 'axios';
+import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 jest.mock('../../services/api');  
 const mockedGetUserAlbums = getUserAlbums as jest.MockedFunction<typeof getUserAlbums>;
 
-const mockAlbums = [
+interface Album {
+  id: number;
+  title: string;
+}
+
+const mockAlbums: Album[] = [
   { id: 1, title: 'Album 1' },
   { id: 2, title: 'Album 2' },
   { id: 3, title: 'Album 3' },
@@ -19,14 +24,20 @@ const mockAlbums = [
   { id: 9, title: 'Album 9' },
 ];
 
-
 const createAxiosResponse = <T,>(data: T): AxiosResponse<T> => ({
-    data,
-    status: 200,
-    statusText: 'OK',
+  data,
+  status: 200,
+  statusText: 'OK',
+  headers: {},
+  config: {
     headers: {},
-    config: {} as any
-  });
+    transitional: {
+      silentJSONParsing: false,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    }
+  } as InternalAxiosRequestConfig
+});
 
 describe('Albums Component', () => {
   const renderAlbums = (userId: string = '1') => {
@@ -57,13 +68,12 @@ describe('Albums Component', () => {
       expect(screen.getByText("User 1's Albums")).toBeInTheDocument();
     });
 
-
     expect(screen.getByText('Album 1')).toBeInTheDocument();
     expect(screen.getByText('Album 8')).toBeInTheDocument();
   });
 
   test('displays error message when no albums are found', async () => {
-    mockedGetUserAlbums.mockResolvedValueOnce(createAxiosResponse([]));
+    mockedGetUserAlbums.mockResolvedValueOnce(createAxiosResponse<Album[]>([]));
     
     renderAlbums();
 

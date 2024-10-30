@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Login from "../Login";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, UserCredential } from "firebase/auth";
 import { toast } from "react-toastify";
 
 // Mock Firebase auth
@@ -12,7 +12,7 @@ jest.mock("firebase/auth", () => ({
   signInWithEmailAndPassword: jest.fn(() => Promise.resolve()),
 }));
 
-// Mock navigate
+
 const mockNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -53,7 +53,11 @@ describe("Login Component", () => {
       signInWithEmailAndPassword as jest.MockedFunction<
         typeof signInWithEmailAndPassword
       >;
-    mockSignInWithEmailAndPassword.mockResolvedValueOnce({} as any);
+    mockSignInWithEmailAndPassword.mockResolvedValueOnce({user: {
+      uid: "testuid",
+      email: "test@example.com"
+    }
+  } as UserCredential);
 
     renderLogin();
 
@@ -128,7 +132,11 @@ describe("Login Component", () => {
 
   test('navigates to home page after successful login', async () => {
     const mockSignInWithEmailAndPassword = signInWithEmailAndPassword as jest.MockedFunction<typeof signInWithEmailAndPassword>;
-    mockSignInWithEmailAndPassword.mockResolvedValueOnce({user: { uid: '123' }} as any);
+    mockSignInWithEmailAndPassword.mockResolvedValueOnce({user: {
+      uid: "123",
+      email: "test@example.com"
+    }
+  } as UserCredential);
     
     renderLogin();
     

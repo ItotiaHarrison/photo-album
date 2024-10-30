@@ -29,6 +29,8 @@ const Oauth = () => {
 
       navigate("/home")
     } catch (error) {
+      console.log('Authorization error :', error);
+      
       toast.error("Could not authorize with Google")
     }
   }
