@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const LandingPage = () => {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-blue-50 text-gray-800 p-4">
@@ -6,21 +8,21 @@ const LandingPage = () => {
           Welcome to Your Photo Album
         </h1>
         <p className="text-xl mb-8 leading-relaxed">
-          Our photo album application allows you to easily upload, organize, and share your precious memories. 
-          Create beautiful collections, add descriptions, and relive your favorite moments anytime, anywhere.
+          Our photo album application allows you to easily upload, organize, and
+          share your precious memories. Create beautiful collections, add
+          descriptions, and relive your favorite moments anytime, anywhere.
         </p>
-        <a 
-          href="/login" 
-          role="button"
+        <Link
+          to="/login"
           className="inline-block bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg 
                      transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none 
                      focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           Get Started
-        </a>
+        </Link>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;
