@@ -27,23 +27,23 @@ const Home = () => {
     const fetchUsersAndAlbums = async () => {
       try {
         setLoading(true);
-        setError(null);
-
+        
         const [usersResponse, albumsResponse] = await Promise.all([
           getUsers(),
           getAlbums()
         ]);
-
+        
         if (!usersResponse.data) {
           throw new Error('No user data received');
         }
-
+        
         if (!albumsResponse.data) {
           throw new Error('No album data received');
         }
-
+        
         setUsers(usersResponse.data);
         setAlbums(albumsResponse.data);
+        setError(null);
 
       } catch (error) {
         console.log('error is ', error)

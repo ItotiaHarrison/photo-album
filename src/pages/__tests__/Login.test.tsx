@@ -20,7 +20,7 @@ jest.mock("react-router-dom", () => ({
 }));
 
 // Mock OAuth component
-jest.mock("../../components/OAuth", () => ({
+jest.mock("../../components/Oauth", () => ({
   __esModule: true,
   default: () => <div>OAuth Component</div>,
 }));

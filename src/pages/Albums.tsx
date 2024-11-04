@@ -20,12 +20,15 @@ const Albums = () => {
       try {
         if (!id) return;
         const albumsResponse = await getUserAlbums(parseInt(id));
-        setAlbums(albumsResponse.data);
+        if (albumsResponse && albumsResponse.data) {
+          setAlbums(albumsResponse.data);
+        }
         
         setLoading(false);
       } catch (error) {
         console.error("Error fetching albums:", error);
         setLoading(false);
+        setAlbums([]);
       }
     };
 

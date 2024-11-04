@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, act} from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import Albums from '../Albums';
 import { getUserAlbums } from '../../services/api';
@@ -62,7 +62,9 @@ describe('Albums Component', () => {
   test('displays albums when data is loaded successfully', async () => {
     mockedGetUserAlbums.mockResolvedValueOnce(createAxiosResponse(mockAlbums));
     
-    renderAlbums();
+    await act(async () => {
+      renderAlbums();
+    });
 
     await waitFor(() => {
       expect(screen.getByText("User 1's Albums")).toBeInTheDocument();
@@ -75,7 +77,9 @@ describe('Albums Component', () => {
   test('displays error message when no albums are found', async () => {
     mockedGetUserAlbums.mockResolvedValueOnce(createAxiosResponse<Album[]>([]));
     
-    renderAlbums();
+    await act(async () => {
+      renderAlbums();
+    });
 
     await waitFor(() => {
       expect(screen.getByText('No Albums found for this user')).toBeInTheDocument();
@@ -85,7 +89,9 @@ describe('Albums Component', () => {
   test('handles pagination correctly', async () => {
     mockedGetUserAlbums.mockResolvedValueOnce(createAxiosResponse(mockAlbums));
     
-    renderAlbums();
+    await act(async () => {
+      renderAlbums();
+    });
 
     await waitFor(() => {
       expect(screen.getByText("User 1's Albums")).toBeInTheDocument();
@@ -106,10 +112,13 @@ describe('Albums Component', () => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     mockedGetUserAlbums.mockRejectedValueOnce(new Error('API Error'));
     
-    renderAlbums();
+    await act(async () => {
+      renderAlbums();
+    });
 
     await waitFor(() => {
       expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching albums:', expect.any(Error));
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
     });
 
     consoleErrorSpy.mockRestore();
@@ -118,7 +127,9 @@ describe('Albums Component', () => {
   test('makes API call with correct user ID', async () => {
     mockedGetUserAlbums.mockResolvedValueOnce(createAxiosResponse(mockAlbums));
     
-    renderAlbums('5');
+    await act(async () => {
+      renderAlbums('5');
+    });
 
     await waitFor(() => {
       expect(mockedGetUserAlbums).toHaveBeenCalledWith(5);
