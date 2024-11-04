@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./index.css";
 import App from "./App.tsx";
 import Home from "./pages/Home.tsx";
@@ -19,17 +19,20 @@ createRoot(document.getElementById("root")!).render(
     <Router>
       <App>
         <Routes>
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/" element={<LandingPage />} />
-          <Route path="/profile" element={<PrivateRoute />}>
-            <Route path="/profile" element={<Profile />} />
-          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/albums/:id" element={<Albums />} />
-          <Route path="/photos/:id" element={<Photos />} />
-          <Route path="/edit-photo/:id" element={<EditPhoto />} />
+
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/albums/:id" element={<Albums />} />
+            <Route path="/photos/:id" element={<Photos />} />
+            <Route path="/edit-photo/:id" element={<EditPhoto />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </App>
     </Router>
