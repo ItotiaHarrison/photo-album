@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { getPhoto, updatePhotoTitle } from "../services/api";
 import { useEffect, useState } from "react";
 
+
 interface Photo {
   id: number;
   title: string;
@@ -16,7 +17,7 @@ const EditPhoto = () => {
   const [newTitle, setNewTitle] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(true);
 
- 
+ //fetch specific photo
   useEffect(() => {
     const fetchPhoto = async () => {
       try {

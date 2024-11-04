@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getAlbumPhotos } from "../services/api";
 import PhotoCard from "../components/PhotoCard";
 
+//photo's data structure
 interface Photo {
   id: number;
   title: string;
@@ -15,19 +16,19 @@ const Photos = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const photosPerPage = 8; 
+  const photosPerPage = 8;
 
+  //fetch photos for the current album
   useEffect(() => {
     const fetchAlbumPhotos = async () => {
       try {
         if (!id) return;
         const photoResponse = await getAlbumPhotos(parseInt(id));
-        if (photoResponse && photoResponse.data){
+        if (photoResponse && photoResponse.data) {
           setPhotos(photoResponse.data);
         } else {
           throw new Error("Invalid response format");
         }
-        
       } catch (error) {
         console.error("Error fetching album photos:", error);
         setLoading(false);
@@ -52,8 +53,8 @@ const Photos = () => {
         <p className="text-xl text-gray-600">No photos found in this album</p>
       </div>
     );
-
-    const indexOfLastPhoto = currentPage * photosPerPage;
+// calculate pagination
+  const indexOfLastPhoto = currentPage * photosPerPage;
   const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
   const currentPhotos = photos.slice(indexOfFirstPhoto, indexOfLastPhoto);
 
@@ -77,20 +78,25 @@ const Photos = () => {
       </div>
 
       <div className="mt-8 flex justify-center">
-        <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-          {Array.from({ length: Math.ceil(photos.length / photosPerPage) }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => paginate(index + 1)}
-              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                currentPage === index + 1
-                  ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                  : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
+        <nav
+          className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+          aria-label="Pagination"
+        >
+          {Array.from({ length: Math.ceil(photos.length / photosPerPage) }).map(
+            (_, index) => (
+              <button
+                key={index}
+                onClick={() => paginate(index + 1)}
+                className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                  currentPage === index + 1
+                    ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
+                    : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
+                }`}
+              >
+                {index + 1}
+              </button>
+            )
+          )}
         </nav>
       </div>
     </div>

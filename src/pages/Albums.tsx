@@ -3,6 +3,7 @@ import { getUserAlbums } from "../services/api";
 import { useParams } from "react-router-dom";
 import AlbumCard from "../components/AlbumCard";
 
+//album's data structure
 interface Album {
   id: number;
   title: string;
@@ -15,6 +16,7 @@ const Albums = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const albumsPerPage = 8; 
 
+  //fetch albums for current user
   useEffect(() => {
     const fetchAlbums = async () => {
       try {
@@ -47,6 +49,7 @@ const Albums = () => {
     </div>
   );
 
+  //calculate pagination
   const indexOfLastAlbum = currentPage * albumsPerPage;
   const indexOfFirstAlbum = indexOfLastAlbum - albumsPerPage;
   const currentAlbums = albums.slice(indexOfFirstAlbum, indexOfLastAlbum);

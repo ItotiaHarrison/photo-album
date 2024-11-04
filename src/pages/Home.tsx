@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAlbums, getUsers } from "../services/api";
 import UsersCard from "../components/UsersCard";
 
+//user's data structure
 interface User {
   id: number;
   name: string;
@@ -9,11 +10,13 @@ interface User {
   email: string;
 }
 
+//album's data structure
 interface Album {
   id: number;
   userId: number;
   title: string;
 }
+
 
 const Home = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -23,6 +26,7 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 8;
 
+  //fetch users and albums
   useEffect(() => {
     const fetchUsersAndAlbums = async () => {
       try {
@@ -41,6 +45,7 @@ const Home = () => {
           throw new Error('No album data received');
         }
         
+        //update state with fetched data
         setUsers(usersResponse.data);
         setAlbums(albumsResponse.data);
         setError(null);
@@ -57,6 +62,7 @@ const Home = () => {
     fetchUsersAndAlbums();
   }, []);
 
+  //calculate the number of albums for a given user
   const getAlbumCountForUser = (userId: number): number => {
     return albums.filter((album) => album.userId === userId).length;
   };
@@ -65,9 +71,11 @@ const Home = () => {
     return (
       <p className="text-center text-xl text-gray-600 mt-12">Loading...</p>
     );
+
   if (error) {
     return <p className="text-center text-xl text-gray-600 mt-12">{error}</p>;
   }
+
   if (!users.length)
     return (
       <p className="text-center text-xl text-gray-600 mt-12">
@@ -75,7 +83,7 @@ const Home = () => {
       </p>
     );
 
-
+//calculate pagination
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
