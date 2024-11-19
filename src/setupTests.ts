@@ -1,12 +1,14 @@
+//import Jest DOM matchers
 import '@testing-library/jest-dom';
 
-// Mock Firebase modules
+// Mock Firebase app modules
 jest.mock('firebase/app', () => ({
   initializeApp: jest.fn(),
   getApps: jest.fn(() => []),
   getApp: jest.fn(),
 }));
 
+//mock firebase auth, simulate unathenticated state,mock auth methods
 jest.mock('firebase/auth', () => ({
   getAuth: jest.fn(() => ({
     currentUser: null,
@@ -17,6 +19,7 @@ jest.mock('firebase/auth', () => ({
   onAuthStateChanged: jest.fn(),
 }));
 
+//mock firebase firestore, database operations, functions
 jest.mock('firebase/firestore', () => ({
   getFirestore: jest.fn(),
   collection: jest.fn(),
@@ -26,7 +29,7 @@ jest.mock('firebase/firestore', () => ({
   serverTimestamp: jest.fn(),
 }));
 
-// Mock react-icons
+// Mock ui react-icons
 jest.mock('react-icons/fc', () => ({
   FcGoogle: () => 'Google Icon',
 }));

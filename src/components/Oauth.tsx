@@ -10,15 +10,19 @@ const Oauth = () => {
 
   async function onGoogleClick() {
     try {
+      //setup Google authentication
       const auth = getAuth()
       const provider = new GoogleAuthProvider()
+
+      //show Google popup and get user info
       const result = await signInWithPopup(auth, provider)
       const user = result.user
       
-      // check for the user
+      // check if the user exists in database
       const docRef = doc(db, "users", user.uid)
       const docSnap = await getDoc(docRef)
 
+      //if user doesn't exist, create a new user record
       if(!docSnap.exists()){
         await setDoc(docRef, {
           name: user.displayName,

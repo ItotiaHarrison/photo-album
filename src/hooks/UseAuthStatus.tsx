@@ -6,7 +6,10 @@ const UseAuthStatus = () => {
     const [checkingStatus, setCheckingStatus] = useState(true)
 
   useEffect(()=>{
+    //get a firebase auth instance
         const auth = getAuth()
+
+        //setup listener for authentication state changes
         onAuthStateChanged(auth, (user)=>{
             if(user){
                 setLoggedIn(true)
@@ -14,6 +17,7 @@ const UseAuthStatus = () => {
             setCheckingStatus(false)
         })
     }, [])
+    
   return {loggedIn, checkingStatus}
 }
 

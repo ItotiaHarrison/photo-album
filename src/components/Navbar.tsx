@@ -3,26 +3,27 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [pageState, setPageState] = useState("Login")
+  const [pageState, setPageState] = useState("Login");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const auth = getAuth();
 
-  useEffect(()=>{
-    onAuthStateChanged(auth, (user)=>{
+  //updates nav text based on login status
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
       setPageState(user ? "Profile" : "Login");
-    })
-}, [auth])
+    });
+  }, [auth]);
 
+  //checks current route for active styling
+  function pathMatchRoute(route: string) {
+    return route === location.pathname;
+  }
 
-  function pathMatchRoute(route: string){
-        return route === location.pathname;
-};
-
-const toggleMobileMenu = () => {
-  setIsMobileMenuOpen(!isMobileMenuOpen);
-};
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <nav className="bg-blue-600 shadow-lg">
@@ -42,7 +43,7 @@ const toggleMobileMenu = () => {
                 }`}
               >
                 Home
-              </Link>            
+              </Link>
 
               <div
                 className={`text-white hover:bg-blue-700 hover:cursor-pointer px-3 py-2 rounded-md text-sm font-medium ${
@@ -56,11 +57,10 @@ const toggleMobileMenu = () => {
             </div>
           </div>
 
-
           <div className="sm:hidden">
             {/* Mobile menu button */}
             <button
-            onClick={toggleMobileMenu}
+              onClick={toggleMobileMenu}
               type="button"
               className="text-gray-300 hover:bg-blue-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               aria-controls="mobile-menu"
@@ -88,7 +88,7 @@ const toggleMobileMenu = () => {
       </div>
 
       {/* Mobile menu, toggle classes based on menu state */}
-      <div className={`sm:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`} >
+      <div className={`sm:hidden ${isMobileMenuOpen ? "block" : "hidden"}`}>
         <div className="px-2 pt-2 pb-3 space-y-1">
           <Link
             to="/home"
@@ -97,7 +97,7 @@ const toggleMobileMenu = () => {
           >
             Home
           </Link>
-         
+
           <Link
             to={pageState === "Profile" ? "/profile" : "/login"}
             className="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium"
